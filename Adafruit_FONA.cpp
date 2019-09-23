@@ -150,19 +150,19 @@ boolean Adafruit_FONA::setBaudrate(uint16_t baud) {
 
 /********* Real Time Clock ********************************************/
 
-boolean Adafruit_FONA::readRTC(uint8_t *year, uint8_t *month, uint8_t *date, uint8_t *hr, uint8_t *min, uint8_t *sec) {
-  uint16_t v;
-  sendParseReply(F("AT+CCLK?"), F("+CCLK: "), &v, '/', 0);
-  *year = v;
+// boolean Adafruit_FONA::readRTC(uint8_t *year, uint8_t *month, uint8_t *date, uint8_t *hr, uint8_t *min, uint8_t *sec) {
+//   uint16_t v;
+//   sendParseReply(F("AT+CCLK?"), F("+CCLK: "), &v, '/', 0);
+//   *year = v;
 
-  DEBUG_PRINTLN(*year);
-}
+//   DEBUG_PRINTLN(*year);
+// }
 
-boolean Adafruit_FONA::enableRTC(uint8_t i) {
-  if (! sendCheckReply(F("AT+CLTS="), i, ok_reply))
-    return false;
-  return sendCheckReply(F("AT&W"), ok_reply);
-}
+// boolean Adafruit_FONA::enableRTC(uint8_t i) {
+//   if (! sendCheckReply(F("AT+CLTS="), i, ok_reply))
+//     return false;
+//   return sendCheckReply(F("AT&W"), ok_reply);
+// }
 
 
 /********* BATTERY & ADC ********************************************/
@@ -181,6 +181,7 @@ boolean Adafruit_FONA_3G::getBattVoltage(uint16_t *v) {
 }
 
 
+//here
 /* returns the percentage charge of battery as reported by sim800 */
 boolean Adafruit_FONA::getBattPercent(uint16_t *p) {
   return sendParseReply(F("AT+CBC"), F("+CBC: "), p, ',', 1);
@@ -192,17 +193,17 @@ boolean Adafruit_FONA::getADCVoltage(uint16_t *v) {
 
 /********* SIM ***********************************************************/
 
-uint8_t Adafruit_FONA::unlockSIM(char *pin)
-{
-  char sendbuff[14] = "AT+CPIN=";
-  sendbuff[8] = pin[0];
-  sendbuff[9] = pin[1];
-  sendbuff[10] = pin[2];
-  sendbuff[11] = pin[3];
-  sendbuff[12] = '\0';
+// uint8_t Adafruit_FONA::unlockSIM(char *pin)
+// {
+//   char sendbuff[14] = "AT+CPIN=";
+//   sendbuff[8] = pin[0];
+//   sendbuff[9] = pin[1];
+//   sendbuff[10] = pin[2];
+//   sendbuff[11] = pin[3];
+//   sendbuff[12] = '\0';
 
-  return sendCheckReply(sendbuff, ok_reply);
-}
+//   return sendCheckReply(sendbuff, ok_reply);
+// }
 
 uint8_t Adafruit_FONA::getSIMCCID(char *ccid) {
   getReply(F("AT+CCID"));
@@ -256,207 +257,207 @@ uint8_t Adafruit_FONA::getRSSI(void) {
 
 /********* AUDIO *******************************************************/
 
-boolean Adafruit_FONA::setAudio(uint8_t a) {
-  // 0 is headset, 1 is external audio
-  if (a > 1) return false;
+// boolean Adafruit_FONA::setAudio(uint8_t a) {
+//   // 0 is headset, 1 is external audio
+//   if (a > 1) return false;
 
-  return sendCheckReply(F("AT+CHFA="), a, ok_reply);
-}
+//   return sendCheckReply(F("AT+CHFA="), a, ok_reply);
+// }
 
-uint8_t Adafruit_FONA::getVolume(void) {
-  uint16_t reply;
+// uint8_t Adafruit_FONA::getVolume(void) {
+//   uint16_t reply;
 
-  if (! sendParseReply(F("AT+CLVL?"), F("+CLVL: "), &reply) ) return 0;
+//   if (! sendParseReply(F("AT+CLVL?"), F("+CLVL: "), &reply) ) return 0;
 
-  return reply;
-}
+//   return reply;
+// }
 
-boolean Adafruit_FONA::setVolume(uint8_t i) {
-  return sendCheckReply(F("AT+CLVL="), i, ok_reply);
-}
-
-
-boolean Adafruit_FONA::playDTMF(char dtmf) {
-  char str[4];
-  str[0] = '\"';
-  str[1] = dtmf;
-  str[2] = '\"';
-  str[3] = 0;
-  return sendCheckReply(F("AT+CLDTMF=3,"), str, ok_reply);
-}
-
-boolean Adafruit_FONA::playToolkitTone(uint8_t t, uint16_t len) {
-  return sendCheckReply(F("AT+STTONE=1,"), t, len, ok_reply);
-}
-
-boolean Adafruit_FONA_3G::playToolkitTone(uint8_t t, uint16_t len) {
-  if (! sendCheckReply(F("AT+CPTONE="), t, ok_reply))
-    return false;
-  delay(len);
-  return sendCheckReply(F("AT+CPTONE=0"), ok_reply);
-}
-
-boolean Adafruit_FONA::setMicVolume(uint8_t a, uint8_t level) {
-  // 0 is headset, 1 is external audio
-  if (a > 1) return false;
-
-  return sendCheckReply(F("AT+CMIC="), a, level, ok_reply);
-}
-
-/********* FM RADIO *******************************************************/
+// boolean Adafruit_FONA::setVolume(uint8_t i) {
+//   return sendCheckReply(F("AT+CLVL="), i, ok_reply);
+// }
 
 
-boolean Adafruit_FONA::FMradio(boolean onoff, uint8_t a) {
-  if (! onoff) {
-    return sendCheckReply(F("AT+FMCLOSE"), ok_reply);
-  }
+// boolean Adafruit_FONA::playDTMF(char dtmf) {
+//   char str[4];
+//   str[0] = '\"';
+//   str[1] = dtmf;
+//   str[2] = '\"';
+//   str[3] = 0;
+//   return sendCheckReply(F("AT+CLDTMF=3,"), str, ok_reply);
+// }
 
-  // 0 is headset, 1 is external audio
-  if (a > 1) return false;
+// boolean Adafruit_FONA::playToolkitTone(uint8_t t, uint16_t len) {
+//   return sendCheckReply(F("AT+STTONE=1,"), t, len, ok_reply);
+// }
 
-  return sendCheckReply(F("AT+FMOPEN="), a, ok_reply);
-}
+// boolean Adafruit_FONA_3G::playToolkitTone(uint8_t t, uint16_t len) {
+//   if (! sendCheckReply(F("AT+CPTONE="), t, ok_reply))
+//     return false;
+//   delay(len);
+//   return sendCheckReply(F("AT+CPTONE=0"), ok_reply);
+// }
 
-boolean Adafruit_FONA::tuneFMradio(uint16_t station) {
-  // Fail if FM station is outside allowed range.
-  if ((station < 870) || (station > 1090))
-    return false;
+// boolean Adafruit_FONA::setMicVolume(uint8_t a, uint8_t level) {
+//   // 0 is headset, 1 is external audio
+//   if (a > 1) return false;
 
-  return sendCheckReply(F("AT+FMFREQ="), station, ok_reply);
-}
+//   return sendCheckReply(F("AT+CMIC="), a, level, ok_reply);
+// }
 
-boolean Adafruit_FONA::setFMVolume(uint8_t i) {
-  // Fail if volume is outside allowed range (0-6).
-  if (i > 6) {
-    return false;
-  }
-  // Send FM volume command and verify response.
-  return sendCheckReply(F("AT+FMVOLUME="), i, ok_reply);
-}
+// /********* FM RADIO *******************************************************/
 
-int8_t Adafruit_FONA::getFMVolume() {
-  uint16_t level;
 
-  if (! sendParseReply(F("AT+FMVOLUME?"), F("+FMVOLUME: "), &level) ) return 0;
+// boolean Adafruit_FONA::FMradio(boolean onoff, uint8_t a) {
+//   if (! onoff) {
+//     return sendCheckReply(F("AT+FMCLOSE"), ok_reply);
+//   }
 
-  return level;
-}
+//   // 0 is headset, 1 is external audio
+//   if (a > 1) return false;
 
-int8_t Adafruit_FONA::getFMSignalLevel(uint16_t station) {
-  // Fail if FM station is outside allowed range.
-  if ((station < 875) || (station > 1080)) {
-    return -1;
-  }
+//   return sendCheckReply(F("AT+FMOPEN="), a, ok_reply);
+// }
 
-  // Send FM signal level query command.
-  // Note, need to explicitly send timeout so right overload is chosen.
-  getReply(F("AT+FMSIGNAL="), station, FONA_DEFAULT_TIMEOUT_MS);
-  // Check response starts with expected value.
-  char *p = prog_char_strstr(replybuffer, PSTR("+FMSIGNAL: "));
-  if (p == 0) return -1;
-  p+=11;
-  // Find second colon to get start of signal quality.
-  p = strchr(p, ':');
-  if (p == 0) return -1;
-  p+=1;
-  // Parse signal quality.
-  int8_t level = atoi(p);
-  readline();  // eat the "OK"
-  return level;
-}
+// boolean Adafruit_FONA::tuneFMradio(uint16_t station) {
+//   // Fail if FM station is outside allowed range.
+//   if ((station < 870) || (station > 1090))
+//     return false;
+
+//   return sendCheckReply(F("AT+FMFREQ="), station, ok_reply);
+// }
+
+// boolean Adafruit_FONA::setFMVolume(uint8_t i) {
+//   // Fail if volume is outside allowed range (0-6).
+//   if (i > 6) {
+//     return false;
+//   }
+//   // Send FM volume command and verify response.
+//   return sendCheckReply(F("AT+FMVOLUME="), i, ok_reply);
+// }
+
+// int8_t Adafruit_FONA::getFMVolume() {
+//   uint16_t level;
+
+//   if (! sendParseReply(F("AT+FMVOLUME?"), F("+FMVOLUME: "), &level) ) return 0;
+
+//   return level;
+// }
+
+// int8_t Adafruit_FONA::getFMSignalLevel(uint16_t station) {
+//   // Fail if FM station is outside allowed range.
+//   if ((station < 875) || (station > 1080)) {
+//     return -1;
+//   }
+
+//   // Send FM signal level query command.
+//   // Note, need to explicitly send timeout so right overload is chosen.
+//   getReply(F("AT+FMSIGNAL="), station, FONA_DEFAULT_TIMEOUT_MS);
+//   // Check response starts with expected value.
+//   char *p = prog_char_strstr(replybuffer, PSTR("+FMSIGNAL: "));
+//   if (p == 0) return -1;
+//   p+=11;
+//   // Find second colon to get start of signal quality.
+//   p = strchr(p, ':');
+//   if (p == 0) return -1;
+//   p+=1;
+//   // Parse signal quality.
+//   int8_t level = atoi(p);
+//   readline();  // eat the "OK"
+//   return level;
+// }
 
 /********* PWM/BUZZER **************************************************/
 
-boolean Adafruit_FONA::setPWM(uint16_t period, uint8_t duty) {
-  if (period > 2000) return false;
-  if (duty > 100) return false;
+// boolean Adafruit_FONA::setPWM(uint16_t period, uint8_t duty) {
+//   if (period > 2000) return false;
+//   if (duty > 100) return false;
 
-  return sendCheckReply(F("AT+SPWM=0,"), period, duty, ok_reply);
-}
+//   return sendCheckReply(F("AT+SPWM=0,"), period, duty, ok_reply);
+// }
 
 /********* CALL PHONES **************************************************/
-boolean Adafruit_FONA::callPhone(char *number) {
-  char sendbuff[35] = "ATD";
-  strncpy(sendbuff+3, number, min(30, (int)strlen(number)));
-  uint8_t x = strlen(sendbuff);
-  sendbuff[x] = ';';
-  sendbuff[x+1] = 0;
-  //DEBUG_PRINTLN(sendbuff);
+// boolean Adafruit_FONA::callPhone(char *number) {
+//   char sendbuff[35] = "ATD";
+//   strncpy(sendbuff+3, number, min(30, (int)strlen(number)));
+//   uint8_t x = strlen(sendbuff);
+//   sendbuff[x] = ';';
+//   sendbuff[x+1] = 0;
+//   //DEBUG_PRINTLN(sendbuff);
 
-  return sendCheckReply(sendbuff, ok_reply);
-}
-
-
-uint8_t Adafruit_FONA::getCallStatus(void) {
-  uint16_t phoneStatus;
-
-  if (! sendParseReply(F("AT+CPAS"), F("+CPAS: "), &phoneStatus))
-    return FONA_CALL_FAILED; // 1, since 0 is actually a known, good reply
-
-  return phoneStatus;  // 0 ready, 2 unkown, 3 ringing, 4 call in progress
-}
-
-boolean Adafruit_FONA::hangUp(void) {
-  return sendCheckReply(F("ATH0"), ok_reply);
-}
-
-boolean Adafruit_FONA_3G::hangUp(void) {
-  getReply(F("ATH"));
-
-  return (prog_char_strstr(replybuffer, (prog_char *)F("VOICE CALL: END")) != 0);
-}
-
-boolean Adafruit_FONA::pickUp(void) {
-  return sendCheckReply(F("ATA"), ok_reply);
-}
-
-boolean Adafruit_FONA_3G::pickUp(void) {
-  return sendCheckReply(F("ATA"), F("VOICE CALL: BEGIN"));
-}
+//   return sendCheckReply(sendbuff, ok_reply);
+// }
 
 
-void Adafruit_FONA::onIncomingCall() {
+// uint8_t Adafruit_FONA::getCallStatus(void) {
+//   uint16_t phoneStatus;
 
-  DEBUG_PRINT(F("> ")); DEBUG_PRINTLN(F("Incoming call..."));
+//   if (! sendParseReply(F("AT+CPAS"), F("+CPAS: "), &phoneStatus))
+//     return FONA_CALL_FAILED; // 1, since 0 is actually a known, good reply
 
-  Adafruit_FONA::_incomingCall = true;
-}
+//   return phoneStatus;  // 0 ready, 2 unkown, 3 ringing, 4 call in progress
+// }
 
-boolean Adafruit_FONA::_incomingCall = false;
+// boolean Adafruit_FONA::hangUp(void) {
+//   return sendCheckReply(F("ATH0"), ok_reply);
+// }
 
-boolean Adafruit_FONA::callerIdNotification(boolean enable, uint8_t interrupt) {
-  if(enable){
-    attachInterrupt(interrupt, onIncomingCall, FALLING);
-    return sendCheckReply(F("AT+CLIP=1"), ok_reply);
-  }
+// boolean Adafruit_FONA_3G::hangUp(void) {
+//   getReply(F("ATH"));
 
-  detachInterrupt(interrupt);
-  return sendCheckReply(F("AT+CLIP=0"), ok_reply);
-}
+//   return (prog_char_strstr(replybuffer, (prog_char *)F("VOICE CALL: END")) != 0);
+// }
 
-boolean Adafruit_FONA::incomingCallNumber(char* phonenum) {
-  //+CLIP: "<incoming phone number>",145,"",0,"",0
-  if(!Adafruit_FONA::_incomingCall)
-    return false;
+// boolean Adafruit_FONA::pickUp(void) {
+//   return sendCheckReply(F("ATA"), ok_reply);
+// }
 
-  readline();
-  while(!prog_char_strcmp(replybuffer, (prog_char*)F("RING")) == 0) {
-    flushInput();
-    readline();
-  }
-
-  readline(); //reads incoming phone number line
-
-  parseReply(F("+CLIP: \""), phonenum, '"');
+// boolean Adafruit_FONA_3G::pickUp(void) {
+//   return sendCheckReply(F("ATA"), F("VOICE CALL: BEGIN"));
+// }
 
 
-  DEBUG_PRINT(F("Phone Number: "));
-  DEBUG_PRINTLN(replybuffer);
+// void Adafruit_FONA::onIncomingCall() {
+
+//   DEBUG_PRINT(F("> ")); DEBUG_PRINTLN(F("Incoming call..."));
+
+//   Adafruit_FONA::_incomingCall = true;
+// }
+
+// boolean Adafruit_FONA::_incomingCall = false;
+
+// boolean Adafruit_FONA::callerIdNotification(boolean enable, uint8_t interrupt) {
+//   if(enable){
+//     attachInterrupt(interrupt, onIncomingCall, FALLING);
+//     return sendCheckReply(F("AT+CLIP=1"), ok_reply);
+//   }
+
+//   detachInterrupt(interrupt);
+//   return sendCheckReply(F("AT+CLIP=0"), ok_reply);
+// }
+
+// boolean Adafruit_FONA::incomingCallNumber(char* phonenum) {
+//   //+CLIP: "<incoming phone number>",145,"",0,"",0
+//   if(!Adafruit_FONA::_incomingCall)
+//     return false;
+
+//   readline();
+//   while(!prog_char_strcmp(replybuffer, (prog_char*)F("RING")) == 0) {
+//     flushInput();
+//     readline();
+//   }
+
+//   readline(); //reads incoming phone number line
+
+//   parseReply(F("+CLIP: \""), phonenum, '"');
 
 
-  Adafruit_FONA::_incomingCall = false;
-  return true;
-}
+//   DEBUG_PRINT(F("Phone Number: "));
+//   DEBUG_PRINTLN(replybuffer);
+
+
+//   Adafruit_FONA::_incomingCall = false;
+//   return true;
+// }
 
 /********* SMS **********************************************************/
 
@@ -578,10 +579,9 @@ boolean Adafruit_FONA::sendSMS(char *smsaddr, char *smsmsg) {
 
   if (! sendCheckReply(sendcmd, F("> "))) return false;
 
-  DEBUG_PRINT(F("> ")); DEBUG_PRINTLN(smsmsg);
+  DEBUG_PRINT(F(">>>")); DEBUG_PRINT(smsmsg); DEBUG_PRINT(F("<<<"));
 
-  mySerial->println(smsmsg);
-  mySerial->println();
+  mySerial->print(smsmsg);
   mySerial->write(0x1A);
 
   DEBUG_PRINTLN("^Z");
@@ -624,90 +624,90 @@ boolean Adafruit_FONA::deleteSMS(uint8_t i) {
 
 /********* USSD *********************************************************/
 
-boolean Adafruit_FONA::sendUSSD(char *ussdmsg, char *ussdbuff, uint16_t maxlen, uint16_t *readlen) {
-  if (! sendCheckReply(F("AT+CUSD=1"), ok_reply)) return false;
+// boolean Adafruit_FONA::sendUSSD(char *ussdmsg, char *ussdbuff, uint16_t maxlen, uint16_t *readlen) {
+//   if (! sendCheckReply(F("AT+CUSD=1"), ok_reply)) return false;
 
-  char sendcmd[30] = "AT+CUSD=1,\"";
-  strncpy(sendcmd+11, ussdmsg, 30-11-2);  // 11 bytes beginning, 2 bytes for close quote + null
-  sendcmd[strlen(sendcmd)] = '\"';
+//   char sendcmd[30] = "AT+CUSD=1,\"";
+//   strncpy(sendcmd+11, ussdmsg, 30-11-2);  // 11 bytes beginning, 2 bytes for close quote + null
+//   sendcmd[strlen(sendcmd)] = '\"';
 
-  if (! sendCheckReply(sendcmd, ok_reply)) {
-    *readlen = 0;
-    return false;
-  } else {
-      readline(10000); // read the +CUSD reply, wait up to 10 seconds!!!
-      //DEBUG_PRINT("* "); DEBUG_PRINTLN(replybuffer);
-      char *p = prog_char_strstr(replybuffer, PSTR("+CUSD: "));
-      if (p == 0) {
-        *readlen = 0;
-        return false;
-      }
-      p+=7; //+CUSD
-      // Find " to get start of ussd message.
-      p = strchr(p, '\"');
-      if (p == 0) {
-        *readlen = 0;
-        return false;
-      }
-      p+=1; //"
-      // Find " to get end of ussd message.
-      char *strend = strchr(p, '\"');
+//   if (! sendCheckReply(sendcmd, ok_reply)) {
+//     *readlen = 0;
+//     return false;
+//   } else {
+//       readline(10000); // read the +CUSD reply, wait up to 10 seconds!!!
+//       //DEBUG_PRINT("* "); DEBUG_PRINTLN(replybuffer);
+//       char *p = prog_char_strstr(replybuffer, PSTR("+CUSD: "));
+//       if (p == 0) {
+//         *readlen = 0;
+//         return false;
+//       }
+//       p+=7; //+CUSD
+//       // Find " to get start of ussd message.
+//       p = strchr(p, '\"');
+//       if (p == 0) {
+//         *readlen = 0;
+//         return false;
+//       }
+//       p+=1; //"
+//       // Find " to get end of ussd message.
+//       char *strend = strchr(p, '\"');
 
-      uint16_t lentocopy = min(maxlen-1, strend - p);
-      strncpy(ussdbuff, p, lentocopy+1);
-      ussdbuff[lentocopy] = 0;
-      *readlen = lentocopy;
-  }
-  return true;
-}
+//       uint16_t lentocopy = min(maxlen-1, strend - p);
+//       strncpy(ussdbuff, p, lentocopy+1);
+//       ussdbuff[lentocopy] = 0;
+//       *readlen = lentocopy;
+//   }
+//   return true;
+// }
 
 
-/********* TIME **********************************************************/
+// /********* TIME **********************************************************/
 
-boolean Adafruit_FONA::enableNetworkTimeSync(boolean onoff) {
-  if (onoff) {
-    if (! sendCheckReply(F("AT+CLTS=1"), ok_reply))
-      return false;
-  } else {
-    if (! sendCheckReply(F("AT+CLTS=0"), ok_reply))
-      return false;
-  }
+// boolean Adafruit_FONA::enableNetworkTimeSync(boolean onoff) {
+//   if (onoff) {
+//     if (! sendCheckReply(F("AT+CLTS=1"), ok_reply))
+//       return false;
+//   } else {
+//     if (! sendCheckReply(F("AT+CLTS=0"), ok_reply))
+//       return false;
+//   }
 
-  flushInput(); // eat any 'Unsolicted Result Code'
+//   flushInput(); // eat any 'Unsolicted Result Code'
 
-  return true;
-}
+//   return true;
+// }
 
-boolean Adafruit_FONA::enableNTPTimeSync(boolean onoff, FONAFlashStringPtr ntpserver) {
-  if (onoff) {
-    if (! sendCheckReply(F("AT+CNTPCID=1"), ok_reply))
-      return false;
+// boolean Adafruit_FONA::enableNTPTimeSync(boolean onoff, FONAFlashStringPtr ntpserver) {
+//   if (onoff) {
+//     if (! sendCheckReply(F("AT+CNTPCID=1"), ok_reply))
+//       return false;
 
-    mySerial->print(F("AT+CNTP=\""));
-    if (ntpserver != 0) {
-      mySerial->print(ntpserver);
-    } else {
-      mySerial->print(F("pool.ntp.org"));
-    }
-    mySerial->println(F("\",0"));
-    readline(FONA_DEFAULT_TIMEOUT_MS);
-    if (strcmp(replybuffer, "OK") != 0)
-      return false;
+//     mySerial->print(F("AT+CNTP=\""));
+//     if (ntpserver != 0) {
+//       mySerial->print(ntpserver);
+//     } else {
+//       mySerial->print(F("pool.ntp.org"));
+//     }
+//     mySerial->println(F("\",0"));
+//     readline(FONA_DEFAULT_TIMEOUT_MS);
+//     if (strcmp(replybuffer, "OK") != 0)
+//       return false;
 
-    if (! sendCheckReply(F("AT+CNTP"), ok_reply, 10000))
-      return false;
+//     if (! sendCheckReply(F("AT+CNTP"), ok_reply, 10000))
+//       return false;
 
-    uint16_t status;
-    readline(10000);
-    if (! parseReply(F("+CNTP:"), &status))
-      return false;
-  } else {
-    if (! sendCheckReply(F("AT+CNTPCID=0"), ok_reply))
-      return false;
-  }
+//     uint16_t status;
+//     readline(10000);
+//     if (! parseReply(F("+CNTP:"), &status))
+//       return false;
+//   } else {
+//     if (! sendCheckReply(F("AT+CNTPCID=0"), ok_reply))
+//       return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
 boolean Adafruit_FONA::getTime(char *buff, uint16_t maxlen) {
   getReply(F("AT+CCLK?"), (uint16_t) 10000);
@@ -762,24 +762,24 @@ boolean Adafruit_FONA::enableGPS(boolean onoff) {
 
 
 
-boolean Adafruit_FONA_3G::enableGPS(boolean onoff) {
-  uint16_t state;
+// boolean Adafruit_FONA_3G::enableGPS(boolean onoff) {
+//   uint16_t state;
 
-  // first check if its already on or off
-  if (! Adafruit_FONA::sendParseReply(F("AT+CGPS?"), F("+CGPS: "), &state) )
-    return false;
+//   // first check if its already on or off
+//   if (! Adafruit_FONA::sendParseReply(F("AT+CGPS?"), F("+CGPS: "), &state) )
+//     return false;
 
-  if (onoff && !state) {
-    if (! sendCheckReply(F("AT+CGPS=1"), ok_reply))
-      return false;
-  } else if (!onoff && state) {
-    if (! sendCheckReply(F("AT+CGPS=0"), ok_reply))
-      return false;
-    // this takes a little time
-    readline(2000); // eat '+CGPS: 0'
-  }
-  return true;
-}
+//   if (onoff && !state) {
+//     if (! sendCheckReply(F("AT+CGPS=1"), ok_reply))
+//       return false;
+//   } else if (!onoff && state) {
+//     if (! sendCheckReply(F("AT+CGPS=0"), ok_reply))
+//       return false;
+//     // this takes a little time
+//     readline(2000); // eat '+CGPS: 0'
+//   }
+//   return true;
+// }
 
 int8_t Adafruit_FONA::GPSstatus(void) {
   if (_type == FONA808_V2) {
@@ -1226,65 +1226,65 @@ boolean Adafruit_FONA::enableGPRS(boolean onoff) {
   return true;
 }
 
-boolean Adafruit_FONA_3G::enableGPRS(boolean onoff) {
+// boolean Adafruit_FONA_3G::enableGPRS(boolean onoff) {
 
-  if (onoff) {
-    // disconnect all sockets
-    //sendCheckReply(F("AT+CIPSHUT"), F("SHUT OK"), 5000);
+//   if (onoff) {
+//     // disconnect all sockets
+//     //sendCheckReply(F("AT+CIPSHUT"), F("SHUT OK"), 5000);
 
-    if (! sendCheckReply(F("AT+CGATT=1"), ok_reply, 10000))
-      return false;
+//     if (! sendCheckReply(F("AT+CGATT=1"), ok_reply, 10000))
+//       return false;
 
 
-    // set bearer profile access point name
-    if (apn) {
-      // Send command AT+CGSOCKCONT=1,"IP","<apn value>" where <apn value> is the configured APN name.
-      if (! sendCheckReplyQuoted(F("AT+CGSOCKCONT=1,\"IP\","), apn, ok_reply, 10000))
-        return false;
+//     // set bearer profile access point name
+//     if (apn) {
+//       // Send command AT+CGSOCKCONT=1,"IP","<apn value>" where <apn value> is the configured APN name.
+//       if (! sendCheckReplyQuoted(F("AT+CGSOCKCONT=1,\"IP\","), apn, ok_reply, 10000))
+//         return false;
 
-      // set username/password
-      if (apnusername) {
-	char authstring[100] = "AT+CGAUTH=1,1,\"";
-	char *strp = authstring + strlen(authstring);
-	prog_char_strcpy(strp, (prog_char *)apnusername);
-	strp+=prog_char_strlen((prog_char *)apnusername);
-	strp[0] = '\"';
-	strp++;
-	strp[0] = 0;
+//       // set username/password
+//       if (apnusername) {
+// 	char authstring[100] = "AT+CGAUTH=1,1,\"";
+// 	char *strp = authstring + strlen(authstring);
+// 	prog_char_strcpy(strp, (prog_char *)apnusername);
+// 	strp+=prog_char_strlen((prog_char *)apnusername);
+// 	strp[0] = '\"';
+// 	strp++;
+// 	strp[0] = 0;
 
-	if (apnpassword) {
-	  strp[0] = ','; strp++;
-	  strp[0] = '\"'; strp++;
-	  prog_char_strcpy(strp, (prog_char *)apnpassword);
-	  strp+=prog_char_strlen((prog_char *)apnpassword);
-	  strp[0] = '\"';
-	  strp++;
-	  strp[0] = 0;
-	}
+// 	if (apnpassword) {
+// 	  strp[0] = ','; strp++;
+// 	  strp[0] = '\"'; strp++;
+// 	  prog_char_strcpy(strp, (prog_char *)apnpassword);
+// 	  strp+=prog_char_strlen((prog_char *)apnpassword);
+// 	  strp[0] = '\"';
+// 	  strp++;
+// 	  strp[0] = 0;
+// 	}
 
-	if (! sendCheckReply(authstring, ok_reply, 10000))
-	  return false;
-      }
-    }
+// 	if (! sendCheckReply(authstring, ok_reply, 10000))
+// 	  return false;
+//       }
+//     }
 
-    // connect in transparent
-    if (! sendCheckReply(F("AT+CIPMODE=1"), ok_reply, 10000))
-      return false;
-    // open network (?)
-    if (! sendCheckReply(F("AT+NETOPEN=,,1"), F("Network opened"), 10000))
-      return false;
+//     // connect in transparent
+//     if (! sendCheckReply(F("AT+CIPMODE=1"), ok_reply, 10000))
+//       return false;
+//     // open network (?)
+//     if (! sendCheckReply(F("AT+NETOPEN=,,1"), F("Network opened"), 10000))
+//       return false;
 
-    readline(); // eat 'OK'
-  } else {
-    // close GPRS context
-    if (! sendCheckReply(F("AT+NETCLOSE"), F("Network closed"), 10000))
-      return false;
+//     readline(); // eat 'OK'
+//   } else {
+//     // close GPRS context
+//     if (! sendCheckReply(F("AT+NETCLOSE"), F("Network closed"), 10000))
+//       return false;
 
-    readline(); // eat 'OK'
-  }
+//     readline(); // eat 'OK'
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
 uint8_t Adafruit_FONA::GPRSstate(void) {
   uint16_t state;
@@ -1348,246 +1348,246 @@ boolean Adafruit_FONA::getGSMLoc(float *lat, float *lon) {
 /********* TCP FUNCTIONS  ************************************/
 
 
-boolean Adafruit_FONA::TCPconnect(char *server, uint16_t port) {
-  flushInput();
+// boolean Adafruit_FONA::TCPconnect(char *server, uint16_t port) {
+//   flushInput();
 
-  // close all old connections
-  if (! sendCheckReply(F("AT+CIPSHUT"), F("SHUT OK"), 20000) ) return false;
+//   // close all old connections
+//   if (! sendCheckReply(F("AT+CIPSHUT"), F("SHUT OK"), 20000) ) return false;
 
-  // single connection at a time
-  if (! sendCheckReply(F("AT+CIPMUX=0"), ok_reply) ) return false;
+//   // single connection at a time
+//   if (! sendCheckReply(F("AT+CIPMUX=0"), ok_reply) ) return false;
 
-  // manually read data
-  if (! sendCheckReply(F("AT+CIPRXGET=1"), ok_reply) ) return false;
-
-
-  DEBUG_PRINT(F("AT+CIPSTART=\"TCP\",\""));
-  DEBUG_PRINT(server);
-  DEBUG_PRINT(F("\",\""));
-  DEBUG_PRINT(port);
-  DEBUG_PRINTLN(F("\""));
+//   // manually read data
+//   if (! sendCheckReply(F("AT+CIPRXGET=1"), ok_reply) ) return false;
 
 
-  mySerial->print(F("AT+CIPSTART=\"TCP\",\""));
-  mySerial->print(server);
-  mySerial->print(F("\",\""));
-  mySerial->print(port);
-  mySerial->println(F("\""));
-
-  if (! expectReply(ok_reply)) return false;
-  if (! expectReply(F("CONNECT OK"))) return false;
-
-  // looks like it was a success (?)
-  return true;
-}
-
-boolean Adafruit_FONA::TCPclose(void) {
-  return sendCheckReply(F("AT+CIPCLOSE"), ok_reply);
-}
-
-boolean Adafruit_FONA::TCPconnected(void) {
-  if (! sendCheckReply(F("AT+CIPSTATUS"), ok_reply, 100) ) return false;
-  readline(100);
-
-  DEBUG_PRINT (F("\t<--- ")); DEBUG_PRINTLN(replybuffer);
-
-  return (strcmp(replybuffer, "STATE: CONNECT OK") == 0);
-}
-
-boolean Adafruit_FONA::TCPsend(char *packet, uint8_t len) {
-
-  DEBUG_PRINT(F("AT+CIPSEND="));
-  DEBUG_PRINTLN(len);
-#ifdef ADAFRUIT_FONA_DEBUG
-  for (uint16_t i=0; i<len; i++) {
-  DEBUG_PRINT(F(" 0x"));
-  DEBUG_PRINT(packet[i], HEX);
-  }
-#endif
-  DEBUG_PRINTLN();
+//   DEBUG_PRINT(F("AT+CIPSTART=\"TCP\",\""));
+//   DEBUG_PRINT(server);
+//   DEBUG_PRINT(F("\",\""));
+//   DEBUG_PRINT(port);
+//   DEBUG_PRINTLN(F("\""));
 
 
-  mySerial->print(F("AT+CIPSEND="));
-  mySerial->println(len);
-  readline();
+//   mySerial->print(F("AT+CIPSTART=\"TCP\",\""));
+//   mySerial->print(server);
+//   mySerial->print(F("\",\""));
+//   mySerial->print(port);
+//   mySerial->println(F("\""));
 
-  DEBUG_PRINT (F("\t<--- ")); DEBUG_PRINTLN(replybuffer);
+//   if (! expectReply(ok_reply)) return false;
+//   if (! expectReply(F("CONNECT OK"))) return false;
 
-  if (replybuffer[0] != '>') return false;
+//   // looks like it was a success (?)
+//   return true;
+// }
 
-  mySerial->write(packet, len);
-  readline(3000); // wait up to 3 seconds to send the data
+// boolean Adafruit_FONA::TCPclose(void) {
+//   return sendCheckReply(F("AT+CIPCLOSE"), ok_reply);
+// }
 
-  DEBUG_PRINT (F("\t<--- ")); DEBUG_PRINTLN(replybuffer);
+// boolean Adafruit_FONA::TCPconnected(void) {
+//   if (! sendCheckReply(F("AT+CIPSTATUS"), ok_reply, 100) ) return false;
+//   readline(100);
+
+//   DEBUG_PRINT (F("\t<--- ")); DEBUG_PRINTLN(replybuffer);
+
+//   return (strcmp(replybuffer, "STATE: CONNECT OK") == 0);
+// }
+
+// boolean Adafruit_FONA::TCPsend(char *packet, uint8_t len) {
+
+//   DEBUG_PRINT(F("AT+CIPSEND="));
+//   DEBUG_PRINTLN(len);
+// #ifdef ADAFRUIT_FONA_DEBUG
+//   for (uint16_t i=0; i<len; i++) {
+//   DEBUG_PRINT(F(" 0x"));
+//   DEBUG_PRINT(packet[i], HEX);
+//   }
+// #endif
+//   DEBUG_PRINTLN();
 
 
-  return (strcmp(replybuffer, "SEND OK") == 0);
-}
+//   mySerial->print(F("AT+CIPSEND="));
+//   mySerial->println(len);
+//   readline();
 
-uint16_t Adafruit_FONA::TCPavailable(void) {
-  uint16_t avail;
+//   DEBUG_PRINT (F("\t<--- ")); DEBUG_PRINTLN(replybuffer);
 
-  if (! sendParseReply(F("AT+CIPRXGET=4"), F("+CIPRXGET: 4,"), &avail, ',', 0) ) return false;
+//   if (replybuffer[0] != '>') return false;
 
+//   mySerial->write(packet, len);
+//   readline(3000); // wait up to 3 seconds to send the data
 
-  DEBUG_PRINT (avail); DEBUG_PRINTLN(F(" bytes available"));
-
-
-  return avail;
-}
+//   DEBUG_PRINT (F("\t<--- ")); DEBUG_PRINTLN(replybuffer);
 
 
-uint16_t Adafruit_FONA::TCPread(uint8_t *buff, uint8_t len) {
-  uint16_t avail;
+//   return (strcmp(replybuffer, "SEND OK") == 0);
+// }
 
-  mySerial->print(F("AT+CIPRXGET=2,"));
-  mySerial->println(len);
-  readline();
-  if (! parseReply(F("+CIPRXGET: 2,"), &avail, ',', 0)) return false;
+// uint16_t Adafruit_FONA::TCPavailable(void) {
+//   uint16_t avail;
 
-  readRaw(avail);
+//   if (! sendParseReply(F("AT+CIPRXGET=4"), F("+CIPRXGET: 4,"), &avail, ',', 0) ) return false;
 
-#ifdef ADAFRUIT_FONA_DEBUG
-  DEBUG_PRINT (avail); DEBUG_PRINTLN(F(" bytes read"));
-  for (uint8_t i=0;i<avail;i++) {
-  DEBUG_PRINT(F(" 0x")); DEBUG_PRINT(replybuffer[i], HEX);
-  }
-  DEBUG_PRINTLN();
-#endif
 
-  memcpy(buff, replybuffer, avail);
+//   DEBUG_PRINT (avail); DEBUG_PRINTLN(F(" bytes available"));
 
-  return avail;
-}
+
+//   return avail;
+// }
+
+
+// uint16_t Adafruit_FONA::TCPread(uint8_t *buff, uint8_t len) {
+//   uint16_t avail;
+
+//   mySerial->print(F("AT+CIPRXGET=2,"));
+//   mySerial->println(len);
+//   readline();
+//   if (! parseReply(F("+CIPRXGET: 2,"), &avail, ',', 0)) return false;
+
+//   readRaw(avail);
+
+// #ifdef ADAFRUIT_FONA_DEBUG
+//   DEBUG_PRINT (avail); DEBUG_PRINTLN(F(" bytes read"));
+//   for (uint8_t i=0;i<avail;i++) {
+//   DEBUG_PRINT(F(" 0x")); DEBUG_PRINT(replybuffer[i], HEX);
+//   }
+//   DEBUG_PRINTLN();
+// #endif
+
+//   memcpy(buff, replybuffer, avail);
+
+//   return avail;
+// }
 
 
 
 /********* HTTP LOW LEVEL FUNCTIONS  ************************************/
 
-boolean Adafruit_FONA::HTTP_init() {
-  return sendCheckReply(F("AT+HTTPINIT"), ok_reply);
-}
+// boolean Adafruit_FONA::HTTP_init() {
+//   return sendCheckReply(F("AT+HTTPINIT"), ok_reply);
+// }
 
-boolean Adafruit_FONA::HTTP_term() {
-  return sendCheckReply(F("AT+HTTPTERM"), ok_reply);
-}
+// boolean Adafruit_FONA::HTTP_term() {
+//   return sendCheckReply(F("AT+HTTPTERM"), ok_reply);
+// }
 
-void Adafruit_FONA::HTTP_para_start(FONAFlashStringPtr parameter,
-                                    boolean quoted) {
-  flushInput();
-
-
-  DEBUG_PRINT(F("\t---> "));
-  DEBUG_PRINT(F("AT+HTTPPARA=\""));
-  DEBUG_PRINT(parameter);
-  DEBUG_PRINTLN('"');
+// void Adafruit_FONA::HTTP_para_start(FONAFlashStringPtr parameter,
+//                                     boolean quoted) {
+//   flushInput();
 
 
-  mySerial->print(F("AT+HTTPPARA=\""));
-  mySerial->print(parameter);
-  if (quoted)
-    mySerial->print(F("\",\""));
-  else
-    mySerial->print(F("\","));
-}
-
-boolean Adafruit_FONA::HTTP_para_end(boolean quoted) {
-  if (quoted)
-    mySerial->println('"');
-  else
-    mySerial->println();
-
-  return expectReply(ok_reply);
-}
-
-boolean Adafruit_FONA::HTTP_para(FONAFlashStringPtr parameter,
-                                 const char *value) {
-  HTTP_para_start(parameter, true);
-  mySerial->print(value);
-  return HTTP_para_end(true);
-}
-
-boolean Adafruit_FONA::HTTP_para(FONAFlashStringPtr parameter,
-                                 FONAFlashStringPtr value) {
-  HTTP_para_start(parameter, true);
-  mySerial->print(value);
-  return HTTP_para_end(true);
-}
-
-boolean Adafruit_FONA::HTTP_para(FONAFlashStringPtr parameter,
-                                 int32_t value) {
-  HTTP_para_start(parameter, false);
-  mySerial->print(value);
-  return HTTP_para_end(false);
-}
-
-boolean Adafruit_FONA::HTTP_data(uint32_t size, uint32_t maxTime) {
-  flushInput();
+//   DEBUG_PRINT(F("\t---> "));
+//   DEBUG_PRINT(F("AT+HTTPPARA=\""));
+//   DEBUG_PRINT(parameter);
+//   DEBUG_PRINTLN('"');
 
 
-  DEBUG_PRINT(F("\t---> "));
-  DEBUG_PRINT(F("AT+HTTPDATA="));
-  DEBUG_PRINT(size);
-  DEBUG_PRINT(',');
-  DEBUG_PRINTLN(maxTime);
+//   mySerial->print(F("AT+HTTPPARA=\""));
+//   mySerial->print(parameter);
+//   if (quoted)
+//     mySerial->print(F("\",\""));
+//   else
+//     mySerial->print(F("\","));
+// }
+
+// boolean Adafruit_FONA::HTTP_para_end(boolean quoted) {
+//   if (quoted)
+//     mySerial->println('"');
+//   else
+//     mySerial->println();
+
+//   return expectReply(ok_reply);
+// }
+
+// boolean Adafruit_FONA::HTTP_para(FONAFlashStringPtr parameter,
+//                                  const char *value) {
+//   HTTP_para_start(parameter, true);
+//   mySerial->print(value);
+//   return HTTP_para_end(true);
+// }
+
+// boolean Adafruit_FONA::HTTP_para(FONAFlashStringPtr parameter,
+//                                  FONAFlashStringPtr value) {
+//   HTTP_para_start(parameter, true);
+//   mySerial->print(value);
+//   return HTTP_para_end(true);
+// }
+
+// boolean Adafruit_FONA::HTTP_para(FONAFlashStringPtr parameter,
+//                                  int32_t value) {
+//   HTTP_para_start(parameter, false);
+//   mySerial->print(value);
+//   return HTTP_para_end(false);
+// }
+
+// boolean Adafruit_FONA::HTTP_data(uint32_t size, uint32_t maxTime) {
+//   flushInput();
 
 
-  mySerial->print(F("AT+HTTPDATA="));
-  mySerial->print(size);
-  mySerial->print(",");
-  mySerial->println(maxTime);
+//   DEBUG_PRINT(F("\t---> "));
+//   DEBUG_PRINT(F("AT+HTTPDATA="));
+//   DEBUG_PRINT(size);
+//   DEBUG_PRINT(',');
+//   DEBUG_PRINTLN(maxTime);
 
-  return expectReply(F("DOWNLOAD"));
-}
 
-boolean Adafruit_FONA::HTTP_action(uint8_t method, uint16_t *status,
-                                   uint16_t *datalen, int32_t timeout) {
-  // Send request.
-  if (! sendCheckReply(F("AT+HTTPACTION="), method, ok_reply))
-    return false;
+//   mySerial->print(F("AT+HTTPDATA="));
+//   mySerial->print(size);
+//   mySerial->print(",");
+//   mySerial->println(maxTime);
 
-  // Parse response status and size.
-  readline(timeout);
-  if (! parseReply(F("+HTTPACTION:"), status, ',', 1))
-    return false;
-  if (! parseReply(F("+HTTPACTION:"), datalen, ',', 2))
-    return false;
+//   return expectReply(F("DOWNLOAD"));
+// }
 
-  return true;
-}
+// boolean Adafruit_FONA::HTTP_action(uint8_t method, uint16_t *status,
+//                                    uint16_t *datalen, int32_t timeout) {
+//   // Send request.
+//   if (! sendCheckReply(F("AT+HTTPACTION="), method, ok_reply))
+//     return false;
 
-boolean Adafruit_FONA::HTTP_readall(uint16_t *datalen) {
-  getReply(F("AT+HTTPREAD"));
-  if (! parseReply(F("+HTTPREAD:"), datalen, ',', 0))
-    return false;
+//   // Parse response status and size.
+//   readline(timeout);
+//   if (! parseReply(F("+HTTPACTION:"), status, ',', 1))
+//     return false;
+//   if (! parseReply(F("+HTTPACTION:"), datalen, ',', 2))
+//     return false;
 
-  return true;
-}
+//   return true;
+// }
 
-boolean Adafruit_FONA::HTTP_ssl(boolean onoff) {
-  return sendCheckReply(F("AT+HTTPSSL="), onoff ? 1 : 0, ok_reply);
-}
+// boolean Adafruit_FONA::HTTP_readall(uint16_t *datalen) {
+//   getReply(F("AT+HTTPREAD"));
+//   if (! parseReply(F("+HTTPREAD:"), datalen, ',', 0))
+//     return false;
 
-/********* HTTP HIGH LEVEL FUNCTIONS ***************************/
+//   return true;
+// }
 
-boolean Adafruit_FONA::HTTP_GET_start(char *url,
-              uint16_t *status, uint16_t *datalen){
-  if (! HTTP_setup(url))
-    return false;
+// boolean Adafruit_FONA::HTTP_ssl(boolean onoff) {
+//   return sendCheckReply(F("AT+HTTPSSL="), onoff ? 1 : 0, ok_reply);
+// }
 
-  // HTTP GET
-  if (! HTTP_action(FONA_HTTP_GET, status, datalen, 30000))
-    return false;
+// /********* HTTP HIGH LEVEL FUNCTIONS ***************************/
 
-  DEBUG_PRINT(F("Status: ")); DEBUG_PRINTLN(*status);
-  DEBUG_PRINT(F("Len: ")); DEBUG_PRINTLN(*datalen);
+// boolean Adafruit_FONA::HTTP_GET_start(char *url,
+//               uint16_t *status, uint16_t *datalen){
+//   if (! HTTP_setup(url))
+//     return false;
 
-  // HTTP response data
-  if (! HTTP_readall(datalen))
-    return false;
+//   // HTTP GET
+//   if (! HTTP_action(FONA_HTTP_GET, status, datalen, 30000))
+//     return false;
 
-  return true;
-}
+//   DEBUG_PRINT(F("Status: ")); DEBUG_PRINTLN(*status);
+//   DEBUG_PRINT(F("Len: ")); DEBUG_PRINTLN(*datalen);
+
+//   // HTTP response data
+//   if (! HTTP_readall(datalen))
+//     return false;
+
+//   return true;
+// }
 
 /*
 boolean Adafruit_FONA_3G::HTTP_GET_start(char *ipaddr, char *path, uint16_t port
@@ -1625,81 +1625,82 @@ boolean Adafruit_FONA_3G::HTTP_GET_start(char *ipaddr, char *path, uint16_t port
 }
 */
 
-void Adafruit_FONA::HTTP_GET_end(void) {
-  HTTP_term();
-}
+// void Adafruit_FONA::HTTP_GET_end(void) {
+//   HTTP_term();
+// }
 
-boolean Adafruit_FONA::HTTP_POST_start(char *url,
-              FONAFlashStringPtr contenttype,
-              const uint8_t *postdata, uint16_t postdatalen,
-              uint16_t *status, uint16_t *datalen){
-  if (! HTTP_setup(url))
-    return false;
+// boolean Adafruit_FONA::HTTP_POST_start(char *url,
+//               FONAFlashStringPtr contenttype,
+//               const uint8_t *postdata, uint16_t postdatalen,
+//               uint16_t *status, uint16_t *datalen){
+//   if (! HTTP_setup(url))
+//     return false;
 
-  if (! HTTP_para(F("CONTENT"), contenttype)) {
-    return false;
-  }
+//   if (! HTTP_para(F("CONTENT"), contenttype)) {
+//     return false;
+//   }
 
-  // HTTP POST data
-  if (! HTTP_data(postdatalen, 10000))
-    return false;
-  mySerial->write(postdata, postdatalen);
-  if (! expectReply(ok_reply))
-    return false;
+//   // HTTP POST data
+//   if (! HTTP_data(postdatalen, 10000))
+//     return false;
+//   mySerial->write(postdata, postdatalen);
+//   if (! expectReply(ok_reply))
+//     return false;
 
-  // HTTP POST
-  if (! HTTP_action(FONA_HTTP_POST, status, datalen))
-    return false;
+//   // HTTP POST
+//   if (! HTTP_action(FONA_HTTP_POST, status, datalen))
+//     return false;
 
-  DEBUG_PRINT(F("Status: ")); DEBUG_PRINTLN(*status);
-  DEBUG_PRINT(F("Len: ")); DEBUG_PRINTLN(*datalen);
+//   DEBUG_PRINT(F("Status: ")); DEBUG_PRINTLN(*status);
+//   DEBUG_PRINT(F("Len: ")); DEBUG_PRINTLN(*datalen);
 
-  // HTTP response data
-  if (! HTTP_readall(datalen))
-    return false;
+//   // HTTP response data
+//   if (! HTTP_readall(datalen))
+//     return false;
 
-  return true;
-}
+//   return true;
+// }
 
-void Adafruit_FONA::HTTP_POST_end(void) {
-  HTTP_term();
-}
+// void Adafruit_FONA::HTTP_POST_end(void) {
+//   HTTP_term();
+// }
 
-void Adafruit_FONA::setUserAgent(FONAFlashStringPtr useragent) {
-  this->useragent = useragent;
-}
+// void Adafruit_FONA::setUserAgent(FONAFlashStringPtr useragent) {
+//   this->useragent = useragent;
+// }
 
-void Adafruit_FONA::setHTTPSRedirect(boolean onoff) {
-  httpsredirect = onoff;
-}
+// void Adafruit_FONA::setHTTPSRedirect(boolean onoff) {
+//   httpsredirect = onoff;
+// }
 
-/********* HTTP HELPERS ****************************************/
+// /********* HTTP HELPERS ****************************************/
 
-boolean Adafruit_FONA::HTTP_setup(char *url) {
-  // Handle any pending
-  HTTP_term();
+// boolean Adafruit_FONA::HTTP_setup(char *url) {
+//   // Handle any pending
+//   HTTP_term();
 
-  // Initialize and set parameters
-  if (! HTTP_init())
-    return false;
-  if (! HTTP_para(F("CID"), 1))
-    return false;
-  if (! HTTP_para(F("UA"), useragent))
-    return false;
-  if (! HTTP_para(F("URL"), url))
-    return false;
+//   // Initialize and set parameters
+//   if (! HTTP_init())
+//     return false;
+//   if (! HTTP_para(F("CID"), 1))
+//     return false;
+//   if (! HTTP_para(F("UA"), useragent))
+//     return false;
+//   if (! HTTP_para(F("URL"), url))
+//     return false;
 
-  // HTTPS redirect
-  if (httpsredirect) {
-    if (! HTTP_para(F("REDIR"),1))
-      return false;
+//   // HTTPS redirect
+//   if (httpsredirect) {
+//     if (! HTTP_para(F("REDIR"),1))
+//       return false;
 
-    if (! HTTP_ssl(true))
-      return false;
-  }
+//     if (! HTTP_ssl(true))
+//       return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }
+
 
 /********* HELPERS *********************************************/
 
@@ -1962,28 +1963,30 @@ boolean Adafruit_FONA::sendCheckReplyQuoted(FONAFlashStringPtr prefix, FONAFlash
 }
 
 
-boolean Adafruit_FONA::parseReply(FONAFlashStringPtr toreply,
-          uint16_t *v, char divider, uint8_t index) {
+//here
+boolean Adafruit_FONA::parseReply(FONAFlashStringPtr toreply, uint16_t *v, char divider, uint8_t index) {
   char *p = prog_char_strstr(replybuffer, (prog_char*)toreply);  // get the pointer to the voltage
   if (p == 0) return false;
   p+=prog_char_strlen((prog_char*)toreply);
-  //DEBUG_PRINTLN(p);
+  DEBUG_PRINTLN("start Adafruit_FONA::parseReply01");
+  DEBUG_PRINTLN(p);
   for (uint8_t i=0; i<index;i++) {
     // increment dividers
     p = strchr(p, divider);
     if (!p) return false;
     p++;
-    //DEBUG_PRINTLN(p);
+    DEBUG_PRINTLN(p);
 
   }
   *v = atoi(p);
 
+  DEBUG_PRINTLN("end Adafruit_FONA::parseReply01");
   return true;
 }
 
-boolean Adafruit_FONA::parseReply(FONAFlashStringPtr toreply,
-          char *v, char divider, uint8_t index) {
+boolean Adafruit_FONA::parseReply(FONAFlashStringPtr toreply, char *v, char divider, uint8_t index) {
   uint8_t i=0;
+  DEBUG_PRINTLN("start Adafruit_FONA::parseReply02");
   char *p = prog_char_strstr(replybuffer, (prog_char*)toreply);
   if (p == 0) return false;
   p+=prog_char_strlen((prog_char*)toreply);
@@ -2003,8 +2006,10 @@ boolean Adafruit_FONA::parseReply(FONAFlashStringPtr toreply,
 
   v[i] = '\0';
 
+  DEBUG_PRINTLN("end Adafruit_FONA::parseReply02");
   return true;
 }
+
 
 // Parse a quoted string in the response fields and copy its value (without quotes)
 // to the specified character array (v).  Only up to maxlen characters are copied
@@ -2013,6 +2018,7 @@ boolean Adafruit_FONA::parseReply(FONAFlashStringPtr toreply,
 boolean Adafruit_FONA::parseReplyQuoted(FONAFlashStringPtr toreply,
           char *v, int maxlen, char divider, uint8_t index) {
   uint8_t i=0, j;
+  DEBUG_PRINTLN("start Adafruit_FONA::parseReplyQuoted");
   // Verify response starts with toreply.
   char *p = prog_char_strstr(replybuffer, (prog_char*)toreply);
   if (p == 0) return false;
@@ -2041,9 +2047,11 @@ boolean Adafruit_FONA::parseReplyQuoted(FONAFlashStringPtr toreply,
   if (j < maxlen)
     v[j] = '\0';
 
+  DEBUG_PRINTLN("end Adafruit_FONA::parseReplyQuoted");
   return true;
 }
 
+//here
 boolean Adafruit_FONA::sendParseReply(FONAFlashStringPtr tosend,
 				      FONAFlashStringPtr toreply,
 				      uint16_t *v, char divider, uint8_t index) {

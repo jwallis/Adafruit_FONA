@@ -67,6 +67,7 @@
 #define FONA_CALL_RINGING 3
 #define FONA_CALL_INPROGRESS 4
 
+
 class Adafruit_FONA : public FONAStreamType {
  public:
   Adafruit_FONA(int8_t r);
@@ -122,6 +123,7 @@ class Adafruit_FONA : public FONAStreamType {
   int8_t getNumSMS(void);
   boolean readSMS(uint8_t i, char *smsbuff, uint16_t max, uint16_t *readsize);
   boolean sendSMS(char *smsaddr, char *smsmsg);
+  boolean sendSMS(char *smsaddr, const __FlashStringHelper* smsmsg);
   boolean deleteSMS(uint8_t i);
   boolean getSMSSender(uint8_t i, char *sender, int senderlen);
   boolean sendUSSD(char *ussdmsg, char *ussdbuff, uint16_t maxlen, uint16_t *readlen);
@@ -198,7 +200,7 @@ class Adafruit_FONA : public FONAStreamType {
   int8_t _rstpin;
   uint8_t _type;
 
-  char replybuffer[255];
+  char replybuffer[141];
   FONAFlashStringPtr apn;
   FONAFlashStringPtr apnusername;
   FONAFlashStringPtr apnpassword;
