@@ -570,7 +570,7 @@ boolean Adafruit_FONA::getSMSSender(uint8_t i, char *sender, int senderlen) {
   return result;
 }
 
-boolean Adafruit_FONA::sendSMS(char *smsaddr, char *smsmsg) {
+boolean Adafruit_FONA::sendSMSPart01(char *smsaddr) {
   if (! sendCheckReply(F("AT+CMGF=1"), ok_reply)) return false;
 
   char sendcmd[30] = "AT+CMGS=\"";
@@ -579,9 +579,10 @@ boolean Adafruit_FONA::sendSMS(char *smsaddr, char *smsmsg) {
 
   if (! sendCheckReply(sendcmd, F("> "))) return false;
 
-  DEBUG_PRINT(F(">>>")); DEBUG_PRINT(smsmsg); DEBUG_PRINT(F("<<<"));
+  return true;
+}
 
-  mySerial->print(smsmsg);
+boolean Adafruit_FONA::sendSMSPart02() {
   mySerial->write(0x1A);
 
   DEBUG_PRINTLN("^Z");
@@ -606,6 +607,30 @@ boolean Adafruit_FONA::sendSMS(char *smsaddr, char *smsmsg) {
   }
 
   return true;
+}
+
+boolean Adafruit_FONA::sendSMS(char *smsaddr, const __FlashStringHelper *smsmsg) {
+  boolean tf = sendSMSPart01(smsaddr);
+  if (!tf) {
+    return false;
+  }
+
+  DEBUG_PRINT(F(">>>")); DEBUG_PRINT(smsmsg); DEBUG_PRINT(F("<<<"));
+  mySerial->print(smsmsg);
+
+  return sendSMSPart02();
+}
+
+boolean Adafruit_FONA::sendSMS(char *smsaddr, char *smsmsg) {
+  boolean tf = sendSMSPart01(smsaddr);
+  if (!tf) {
+    return false;
+  }
+
+  DEBUG_PRINT(F(">>>")); DEBUG_PRINT(smsmsg); DEBUG_PRINT(F("<<<"));
+  mySerial->print(smsmsg);
+
+  return sendSMSPart02();
 }
 
 
